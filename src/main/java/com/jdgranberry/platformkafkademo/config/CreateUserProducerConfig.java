@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Configuration
 public class CreateUserProducerConfig {
-    @Value(value = "${kafka.bootstrapAddress}")
+    @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Bean
@@ -27,7 +27,7 @@ public class CreateUserProducerConfig {
                 bootstrapAddress);
         configProps.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
+                StringSerializer.class);
         configProps.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class);
