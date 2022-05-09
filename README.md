@@ -21,8 +21,9 @@ Running the local Kafka services
   store the user & address data tied by an id together.
 
 ## Endpoints
-
-POST localhost:8080/v1/user Post body example:
+GET localhost:8080/v1/audit/users?country={country}
+POST localhost:8080/v1/user  
+Post body example:
 
 ```json
 {
@@ -43,10 +44,8 @@ POST localhost:8080/v1/user Post body example:
 }
 ```
 
-GET localhost:8080/v1/audit/users?country=<country>
-
-An Insomnia configuration is included for interacting with the API.
-
+An Insomnia configuration is included for interacting with the API.  
+[Insomnia_platform-kafka-demo.json](Insomnia_platform-kafka-demo.json)
 ## TODO
 
 * Tests :)
