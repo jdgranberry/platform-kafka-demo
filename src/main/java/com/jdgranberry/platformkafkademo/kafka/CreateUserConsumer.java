@@ -34,24 +34,19 @@ public class CreateUserConsumer {
                 consumer.seekToBeginning(partitions);
             }
         });
-
         consumer.seekToBeginning(consumer.assignment());
-
-        long startTime = System.currentTimeMillis();
 
         /* We limit the polling to 30s. This works for small datasets as a process of the REST transaction, but needs
          * to be reworked for larger datasets.
          */
+        long startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime < 30_000) {
             ConsumerRecords<String, CreateUserRecord> records = consumer.poll(Duration.ofMillis(500));
-
-            if (records.isEmpty()) {
-                break;
-            }
+            if (records.isEmpty()) { break; }
 
             records.forEach(record -> {
-                if (record.value().addressRecord().address().country().equals(country)) {
-                    users.add(record.value().userRecord().user().firstName() + " " + record.value().userRecord().user().lastName());
+                if (record.value().address().country().equals(country)) {
+                    users.add(record.value().user().firstName() + " " + record.value().user().lastName());
                 }
             });
         }
