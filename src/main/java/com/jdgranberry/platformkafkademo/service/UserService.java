@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 @Service
 public class UserService {
@@ -24,7 +22,7 @@ public class UserService {
     }
 
     public CreateUserRecord createUser(CreateUserRequest createUserRequest) {
-        System.out.printf("Publish to topic %s with id <TODO>", producer.topic);
+        System.out.printf("Publish to topic %s with id <TODO>%n", producer.topic);
 
         /* TODO figure out id mechanism */
         CreateUserRecord record = new CreateUserRecord(
@@ -37,6 +35,6 @@ public class UserService {
     }
 
     public ArrayList<String> getUsersByCountry(String country) {
-        return consumer.consumeWithCountryFilter(country);
+        return consumer.processTopicWithCountryFilter(country);
     }
 }

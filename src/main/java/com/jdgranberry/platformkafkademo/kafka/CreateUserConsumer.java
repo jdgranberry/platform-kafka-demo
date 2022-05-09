@@ -21,8 +21,8 @@ public class CreateUserConsumer {
         this.consumer = consumer;
     }
 
-    public ArrayList<String> consumeWithCountryFilter(String country) {
-        ArrayList<String> users = new ArrayList<String>();
+    public ArrayList<String> processTopicWithCountryFilter(String country) {
+        ArrayList<String> users = new ArrayList<>();
 
         consumer.subscribe(Set.of("create-user"), new ConsumerRebalanceListener() {
             @Override
@@ -37,17 +37,24 @@ public class CreateUserConsumer {
 
         consumer.seekToBeginning(consumer.assignment());
 
+        long startTime = System.currentTimeMillis();
+
         /* We limit the polling to 30s. This works for small datasets as a process of the REST transaction, but needs
          * to be reworked for larger datasets.
          */
-        ConsumerRecords<String, CreateUserRecord> records = consumer.poll(Duration.ofMillis(1_000));
+        while (System.currentTimeMillis() - startTime < 30_000) {
+            ConsumerRecords<String, CreateUserRecord> records = consumer.poll(Duration.ofMillis(500));
 
-        records.forEach(record -> {
-            System.out.println(record.value());
-            if (record.value().addressRecord().address().country().equals(country)) {
-                users.add(record.value().userRecord().user().firstName() + " " + record.value().userRecord().user().lastName());
+            if (records.isEmpty()) {
+                break;
             }
-        });
+
+            records.forEach(record -> {
+                if (record.value().addressRecord().address().country().equals(country)) {
+                    users.add(record.value().userRecord().user().firstName() + " " + record.value().userRecord().user().lastName());
+                }
+            });
+        }
 
         return users;
     }
