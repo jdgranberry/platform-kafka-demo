@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 @Service
 public class UserService {
-    @Value(value = "${kafka.topic}")
-    private String topic;
     CreateUserProducer producer;
     CreateUserConsumer consumer;
 
@@ -24,11 +22,7 @@ public class UserService {
     public CreateUserRecord createUser(CreateUserRequest createUserRequest) {
         System.out.printf("Publish to topic %s with id <TODO>%n", producer.topic);
 
-        /* TODO figure out id mechanism */
-        CreateUserRecord record = new CreateUserRecord(
-                new UserRecord(1L, createUserRequest.user()),
-                new AddressRecord(1L, createUserRequest.address()));
-
+        CreateUserRecord record = new CreateUserRecord(createUserRequest.user(), createUserRequest.address());
         producer.send(record);
 
         return record;
