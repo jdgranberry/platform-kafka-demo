@@ -30,7 +30,7 @@ Post body example:
   "user": {
     "firstName": "Josh",
     "lastName": "Granberry",
-    "email": "jdgranberry@gmail.com",
+    "email": "joshsemail@gmail.com",
     "password": "password"
   },
   "address": {
